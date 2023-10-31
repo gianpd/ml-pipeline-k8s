@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring
+  template:
+    metadata:
+      name: monitoring-pod
+      labels:
+        app: monitoring
+    spec:
+      containers:
+        - name: monitoring-container
+          image: monitoring:v1
+          volumeMounts:
+            - name: monitoring-pv
+              mountPath: /usr/app/shared
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APPLICATION
+              value: "start-server"
+            - name: ServerPort
+              value: "5010"
+          ports:
+            - containerPort: 5010
+      volumes:
+        - name: monitoring-pv
+          persistentVolumeClaim:
+            claimName: pvc-001

@@ -1,0 +1,6 @@
+resources:
+  # - pv.yaml
+  # - pvc.yaml
+  - training/kubernetes/deployment.yaml
+  # - inference/kubernetes/deployment.yaml
+  - monitoring/kubernetes/deployment.yaml

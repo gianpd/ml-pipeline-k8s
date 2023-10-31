@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: training-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: training
+  template:
+    metadata:
+      name: training-pod
+      labels:
+        app: training
+    spec:
+      containers:
+        - name: training-container
+          image: training:v1
+          volumeMounts:
+            - name: training-pv
+              mountPath: /usr/app/shared
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TRAINING_LOGS_PATH
+              value: "shared/training/logs"
+      volumes:
+        - name: training-pv
+          persistentVolumeClaim:
+            claimName: pvc-001
+
